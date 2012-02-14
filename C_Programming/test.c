@@ -1,17 +1,15 @@
 #include <stdio.h>
-
-int fn(int n){
-     return n;
+int hello(){
+  int i = 0;
+  if (i<=0){
+    printf ("hello\n");
+  }
 }
+
 int main(int argc, char *argv[])
 {
-     char i = 's';
-     while(i < 'w'){
-	  printf ("%c\n",i);
-	  i++;
-     }
-     printf ("%c\n",i);
-     return 0;
+  printf ("helloword\n");
+  hello();
+  return 0;
 }
-
 

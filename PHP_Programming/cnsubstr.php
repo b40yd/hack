@@ -15,15 +15,23 @@
  * 
  */
 
-function cnsubstr($str,$len){
-  if ($str=='' && strlen($str)<=$len){
-    return $str;
-  }
-  if(ord(substr($str,$len-1,1))>0xa0){
-    $len++;
-  }
-  return substr($str,0,$len);
+// Iterative ergodic character coding
+// if ord () > 0xa0 substr($str, $i, 2)
+
+function cnsubstr($str,$start,$len){
+
+	$tmpstr = "";
+	$strlens = $start + $len;
+	for($i = 0; $i < $strlens; $i++) {
+		if(ord(substr($str, $i, 1)) > 0xa0) {
+			$tmpstr .= substr($str, $i, 2);
+			$i++;
+		} else
+			$tmpstr .= substr($str, $i, 1);
+	}
+	return $tmpstr;
 }
+
 
 ///echo cnsubstr("我的主页http://www.boolsir.com,操!垃圾信息，哈哈哈大师级点卡第三届很多出色卡号",41);
 

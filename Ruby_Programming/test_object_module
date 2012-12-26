@@ -32,7 +32,7 @@ b.hh
 
 module  M
     class A
-		class B
+    	class B
 			def this
 				puts "this"
 			end
@@ -48,5 +48,25 @@ module N
     	include M	
         a = A.new
     	puts a.hello
+        def xx
+            puts "xxx"
+        end
     end
 end
+
+module V
+    include M
+    def v
+        puts 'vvv'
+    end
+end
+
+class T
+    include V
+    def t
+        v
+    end
+end 
+t = T.new
+t.t
+T::V::A.new.hello

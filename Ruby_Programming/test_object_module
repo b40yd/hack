@@ -1,0 +1,52 @@
+class A
+    def hello
+      puts "hello"
+	end
+end
+
+def A.World
+	puts "world"
+end
+
+class A
+	class B
+		def this
+			puts "this"
+		end
+	end
+end
+
+a = A.new 
+
+a.hello 
+A.World 
+
+b = A::B.new
+
+b.this
+def b.hh
+    puts "hh"
+end
+b.hh
+
+
+module  M
+    class A
+		class B
+			def this
+				puts "this"
+			end
+		end
+		def hello
+			puts "hello"
+		end
+	end
+end
+
+module N
+    module X
+    	include M	
+        a = A.new
+    	puts a.hello
+    end
+end

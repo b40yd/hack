@@ -1,0 +1,49 @@
+<html>
+<head>
+	<title>hello</title>
+	<script type="text/javascript">
+		var Class = function(parent){
+			if(parent){
+				var Cls = new Class();
+				Cls.include(new parent());
+			}
+			Class.prototype.include = function(obj){
+				for (var i in obj) {
+					Class.prototype[i] = obj[i];
+				}
+				// return Class;
+			};
+			Class.extend = function(obj){
+				for (var i in obj) {
+					Class[i] = obj[i];
+				}
+			};
+		};
+
+		Class.prototype.hello = function(){
+			console.log('This hello function instace Class');
+		};
+		//console.log(Class);
+		var newClass = function(){};
+		newClass.prototype.world = function(){console.log('This world function instace newClass');};
+		// var ss = new Class({
+		// 	instace:function(){console.log('ssss');}
+		// });
+		var s = new Class(newClass);
+		console.log(s);
+		Class.extend({
+			instace:function(){console.log('ssss');}
+		});
+		Class.instace();
+		s.include({
+			getInstance:function(){console.log('getInstance');}
+		});
+		s.hello();
+		s.world();
+		s.getInstance();
+		//s.instace();
+	</script>
+</head>
+<body>
+</body>
+</html>

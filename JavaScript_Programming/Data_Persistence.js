@@ -1,13 +1,15 @@
 //console.log(Object);
 if(typeof Object.create != "function")
-  Object.create = function(o){
+	Object.create = function(o){
 		function F(){};
 		F.prototype = o;
 		return new F();
 	};
 var Model = {
 	inherited:function(){},
-	created:function(){},
+	created:function(){
+		this.records = {};
+	},
 	prototype:{
 		init:function(){}
 	},
@@ -38,28 +40,6 @@ var Model = {
 	}
 	
 };
-
-var User = Model.create();
-//console.log(User);
-var Asset = Model.create();
-//console.log(Asset.create());
-var user = User.init({name:"Tag.Bao"});
-
-jQuery.extend(Model,{find:function(){}});
-//console.log(Asset.find);
-
-Model.extend({
-	find:function(){}
-});
-
-Model.include({
-	init:function(){},
-	load:function(){}
-});
-var asset = Asset.init({name:"Tag.Bao"});
-//console.log(asset.find());
-
-Model.records = {};
 Model.include({
 	newRecord:true,
 	create:function(){
@@ -91,9 +71,36 @@ Math.guid = function(){
 		return v.toString(16);
 	}).toUpperCase()+d.getTime();
 };
+var User = Model.create();
+//console.log(User);
+var Asset = Model.create();
+//console.log(Asset.create());
 
 
 var asset = Asset.init();
 asset.save();
 console.log(asset.id);
-console.log();
+Asset.extend({
+	find:function(id){
+		var record = this.records[id];
+		if( !record ) console.log('Unknown record');
+		return record.dup();
+	}
+});
+Asset.include({
+	create:function(){
+		if(!this.id) this.id = Math.guid();
+		this.newRecord = false;
+		this.parent.records[this.id] = this.dup();
+	},
+	update:function(){
+		this.parernt.records[this.id] = this.dup();
+	},
+	dup:function(){
+		return jQuery.extend(true,{},this);
+	}
+	
+});
+var a = Asset.init();
+a.save();
+console.log(Asset.find(a.id));

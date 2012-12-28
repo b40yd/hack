@@ -40,27 +40,48 @@ var Model = {
 	}
 	
 };
+jQuery.extend(Model,{
+	find:function(){}
+});
+jQuery.extend(Model.prototype,{
+	init:function(atts){
+		if(atts) this.load(atts);
+	},
+	load:function(attributes){
+		this.create();
+		for(var name in attributes)
+			this[name] = attributes[name];
+	}
+});
+
 Model.include({
 	newRecord:true,
 	create:function(){
 		if(!this.id) this.id = Math.guid();
 		this.newRecord = false;
 		this.parent.records[this.id] = this;
+		return this;
 	},
 	destroy:function(){
 		delete this.parent.records[this.id];
+		return this.parent.records;
 	},
 	update:function(){
 		this.parent.records[this.id] = this;
+		return this;
 	},
 	save:function(){
 		this.newRecord?this.create():this.update();
+		return this;
 	}
 });
 
 Model.extend({
 	find: function(id){
 		return this.records[id] || console.log("Unknown record");
+	},
+	created:function(){
+		this.records = {};
 	}
 });
 
@@ -92,15 +113,28 @@ Asset.include({
 		if(!this.id) this.id = Math.guid();
 		this.newRecord = false;
 		this.parent.records[this.id] = this.dup();
+		return this.parent;
 	},
 	update:function(){
-		this.parernt.records[this.id] = this.dup();
+		this.parent.records[this.id] = this.dup();
+		return this.parent;
 	},
 	dup:function(){
 		return jQuery.extend(true,{},this);
 	}
 	
 });
-var a = Asset.init();
+//var a = Asset({name:"bao"});
+//a.save();
+var Asset = Model.create();
+var a = Asset.init({name:"sss"});
+var a1 = Asset.init({name:"s2ss"});
+var a2 = Asset.init({name:"ss2s"});
+
+a.name = "hh";
 a.save();
-console.log(Asset.find(a.id));
+a1.save();
+a2.save();
+a2.ddd='aaaa';
+a.destroy()
+console.log(Asset);

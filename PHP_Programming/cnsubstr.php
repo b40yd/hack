@@ -71,15 +71,11 @@ function cut_str($string, $sublen, $start = 0, $code = 'UTF-8')
 {
     if($code == 'UTF-8')
     {
-      return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$start.'}'.
-                       '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$sublen.'}).*#s',
-                       '$1',$str);
-      /*
-	$pa = "/[\x01-\x7f]|[\xc2-\xdf][\x80-\xbf]|\xe0[\xa0-\xbf][\x80-\xbf]|[\xe1-\xef][\x80-\xbf][\x80-\xbf]|\xf0[\x90-\xbf][\x80-\xbf][\x80-\xbf]|[\xf1-\xf7][\x80-\xbf][\x80-\xbf][\x80-\xbf]/";
+        $pa = "/[\x01-\x7f]|[\xc2-\xdf][\x80-\xbf]|\xe0[\xa0-\xbf][\x80-\xbf]|[\xe1-\xef][\x80-\xbf][\x80-\xbf]|\xf0[\x90-\xbf][\x80-\xbf][\x80-\xbf]|[\xf1-\xf7][\x80-\xbf][\x80-\xbf][\x80-\xbf]/";
         preg_match_all($pa, $string, $t_string);
+
         if(count($t_string[0]) - $start > $sublen) return join('', array_slice($t_string[0], $start, $sublen))."...";
         return join('', array_slice($t_string[0], $start, $sublen));
-      */
     }
     else
     {
@@ -92,7 +88,7 @@ function cut_str($string, $sublen, $start = 0, $code = 'UTF-8')
         {
             if($i>=$start && $i< ($start+$sublen))
             {
-                if(ord(substr($string, $i, 1))>0xa0)
+                if(ord(substr($string, $i, 1))>129)
                 {
                     $tmpstr.= substr($string, $i, 2);
                 }
@@ -101,7 +97,7 @@ function cut_str($string, $sublen, $start = 0, $code = 'UTF-8')
                     $tmpstr.= substr($string, $i, 1);
                 }
             }
-            if(ord(substr($string, $i, 1))>0xa0) $i++;
+            if(ord(substr($string, $i, 1))>129) $i++;
         }
         if(strlen($tmpstr)< $strlen ) $tmpstr.= "...";
         return $tmpstr;

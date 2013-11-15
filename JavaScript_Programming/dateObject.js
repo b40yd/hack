@@ -1,3 +1,4 @@
+
 var dateObject = function(){
 	var formatDateTime = new Date();
 	return this;
@@ -9,7 +10,7 @@ dateObject.prototype.getToday = function(){
 
 dateObject.prototype.init = function(times){
 
-	if(times == "" || typeof(times) == 'undefined'){
+	if(times == '' || typeof(times) == 'undefined'){
 		this.formatDateTime = new Date();
 	}else{
 		if( typeof(times) == 'object' && (times instanceof Date) ){
@@ -38,6 +39,9 @@ dateObject.prototype.getCurrentWeekFirstDay = function(){
 
 dateObject.prototype.getPrevWeekLastDay = function(times){
 	var WeekFirstDay = this.init(times);
+	if(times == ''){
+		return new Date(WeekFirstDay-86400000);
+	}
 	var WeekLastDay=new Date((WeekFirstDay/1000-7*86400)*1000);
 	return new Date((WeekLastDay/1000-86400)*1000);
 };
@@ -45,6 +49,8 @@ dateObject.prototype.getPrevWeekLastDay = function(times){
 dateObject.prototype.getNextWeekLastDay = function(times){
 	var WeekFirstDay = this.init(times);
 	var WeekLastDay=new Date((WeekFirstDay/1000+6*86400)*1000);
+	if(times == '')
+		return new Date((WeekLastDay/1000+7*86400)*1000);
 	return new Date((WeekLastDay/1000)*1000);
 
 };

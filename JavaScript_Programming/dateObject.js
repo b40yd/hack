@@ -1,4 +1,3 @@
-
 var dateObject = function(){
 	var formatDateTime = new Date();
 	return this;
@@ -32,8 +31,8 @@ dateObject.prototype.getNextWeekFirstDay = function(times){
 	var WeekLastDay = new Date((WeekFirstDay/1000+6*86400)*1000);
 	return new Date((WeekLastDay/1000+86400)*1000);
 };
-dateObject.prototype.getCurrentWeekFirstDay = function(){
-	return this.init();
+dateObject.prototype.getCurrentWeekFirstDay = function(times){
+	return this.init(times);
 };
 
 
@@ -54,21 +53,21 @@ dateObject.prototype.getNextWeekLastDay = function(times){
 	return new Date((WeekLastDay/1000)*1000);
 
 };
-dateObject.prototype.getCurrentWeekLastDay = function(){
-	var WeekFirstDay = this.init();
+dateObject.prototype.getCurrentWeekLastDay = function(times){
+	var WeekFirstDay = this.init(times);
 	return new Date((WeekFirstDay/1000+6*86400)*1000);
 };
 //get current week first and last day.
-dateObject.prototype.getCurrentWeek =  function(){
-	return [this.getCurrentWeekFirstDay(),this.getCurrentWeekLastDay()];
+dateObject.prototype.getCurrentWeek =  function(times){
+	return [this.getCurrentWeekFirstDay(times),this.getCurrentWeekLastDay(times)];
 };
 //get prev week first and last day.
-dateObject.prototype.getPrevWeek =  function(startTime,endTime){
-	return [this.getPrevWeekFirstDay(startTime),this.getPrevWeekLastDay(endTime)];
+dateObject.prototype.getPrevWeek =  function(times){
+	return [this.getPrevWeekFirstDay(times),this.getPrevWeekLastDay(times)];
 };
 //get next week first and last day.
-dateObject.prototype.getNextWeek =  function(startTime,endTime){
-	return [this.getNextWeekFirstDay(startTime),this.getNextWeekLastDay(endTime)];
+dateObject.prototype.getNextWeek =  function(times){
+	return [this.getNextWeekFirstDay(times),this.getNextWeekLastDay(times)];
 };
 
 dateObject.prototype.getPrevMonthFirstDay = function(times){
@@ -79,8 +78,8 @@ dateObject.prototype.getNextMonthFirstDay = function(times){
 	this.init(times);
 	return new Date(this.formatDateTime.getFullYear(),this.formatDateTime.getMonth()+1,1);
 };
-dateObject.prototype.getCurrentMonthFirstDay = function(){
-	this.init();
+dateObject.prototype.getCurrentMonthFirstDay = function(times){
+	this.init(times);
 	return new Date(this.formatDateTime.getFullYear(),this.formatDateTime.getMonth(),1);
 };
 
@@ -95,23 +94,23 @@ dateObject.prototype.getNextMonthLastDay = function(times){
 	var MonthNextFirstDay = new Date(this.formatDateTime.getFullYear(),this.formatDateTime.getMonth()+2,1);
 	return new Date(MonthNextFirstDay-86400000);
 };
-dateObject.prototype.getCurrentMonthLastDay = function(){
-	this.init();
+dateObject.prototype.getCurrentMonthLastDay = function(times){
+	this.init(times);
 	var MonthNextFirstDay = new Date(this.formatDateTime.getFullYear(),this.formatDateTime.getMonth()+1,1);
 	return new Date(MonthNextFirstDay-86400000);
 };
 
 //get current month first and last day.
-dateObject.prototype.getCurrentMonth = function(){
-	return [this.getCurrentMonthFirstDay(),this.getCurrentMonthLastDay()];
+dateObject.prototype.getCurrentMonth = function(times){
+	return [this.getCurrentMonthFirstDay(times),this.getCurrentMonthLastDay(times)];
 };
 //get perv month first and last day.
-dateObject.prototype.getPrevMonth = function(startTime,endTime){
-	return [this.getPrevMonthFirstDay(startTime),this.getPrevMonthLastDay(endTime)];
+dateObject.prototype.getPrevMonth = function(times){
+	return [this.getPrevMonthFirstDay(times),this.getPrevMonthLastDay(times)];
 };
 //get Next month first and last day.
-dateObject.prototype.getNextMonth = function(startTime,endTime){
-	return [this.getNextMonthFirstDay(startTime),this.getNextMonthLastDay(endTime)];
+dateObject.prototype.getNextMonth = function(times){
+	return [this.getNextMonthFirstDay(times),this.getNextMonthLastDay(times)];
 };
 
 

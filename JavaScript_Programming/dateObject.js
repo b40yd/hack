@@ -38,19 +38,13 @@ dateObject.prototype.getCurrentWeekFirstDay = function(times){
 
 dateObject.prototype.getPrevWeekLastDay = function(times){
 	var WeekFirstDay = this.init(times);
-	if(times == ''){
-		return new Date(WeekFirstDay-86400000);
-	}
-	var WeekLastDay=new Date((WeekFirstDay/1000-7*86400)*1000);
-	return new Date((WeekLastDay/1000-86400)*1000);
+	return new Date((WeekFirstDay/1000-86400)*1000);
 };
 
 dateObject.prototype.getNextWeekLastDay = function(times){
 	var WeekFirstDay = this.init(times);
 	var WeekLastDay=new Date((WeekFirstDay/1000+6*86400)*1000);
-	if(times == '')
-		return new Date((WeekLastDay/1000+7*86400)*1000);
-	return new Date((WeekLastDay/1000)*1000);
+	return new Date((WeekLastDay/1000+7*86400)*1000);
 
 };
 dateObject.prototype.getCurrentWeekLastDay = function(times){
@@ -118,10 +112,10 @@ dateObject.prototype.getNextMonth = function(times){
 
 Date.prototype.toString = function ()
 {
-	return this.getFullYear() + "-" + (this.getMonth()+1) + "-" + this.getDate();
+	return this.getFullYear() + "/" + (this.getMonth()+1) + "/" + this.getDate();
 };
 Date.prototype.toDateTimeString = function(){
-	return this.getFullYear() + "-" + (this.getMonth()+1) + "-" + this.getDate()+" "+this.getHours()+":"+this.getMinutes()+":"+this.getSeconds();
+	return this.getFullYear() + "/" + (this.getMonth()+1) + "/" + this.getDate()+" "+this.getHours()+":"+this.getMinutes()+":"+this.getSeconds();
 };
 Date.prototype.toTimeString = function(){
 	return this.getHours()+":"+this.getMinutes()+":"+this.getSeconds();

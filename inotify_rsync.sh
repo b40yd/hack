@@ -4,7 +4,7 @@
 #local files or directory.
 SRC=/var/www/;
 #server
-DST=baoqing@182.140.142.114:backup;
+DST=wackonline@127.0.0.1:backup;
 #inotifywait need to rule out files or directory.
 INOTIFY_EXCLUDE=""; #/var/www/backup
 #inotify-tools's inotifywait command-line.

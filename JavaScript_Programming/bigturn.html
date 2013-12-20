@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<title>test canvas</title>
+<style type="text/css">
+#games{
+	float:left;
+	width:600px;
+	z-index:1;
+}
+#games canvas{
+		position:absolute;
+		margin-top:10px;
+		margin-left:50px;		
+}
+#resource {
+	z-index:0;
+	float:right;
+	margin-right:150px;		
+}
+</style>
+<body>
+<div id="games">
+	<canvas id="main" width="512" height="448"></canvas> 
+</div>
+<div id="resource">
+	<button id="start" onclick="start()">start</button>
+</div>
+<script type="text/javascript">
+
+	
+	//扇形
+CanvasRenderingContext2D.prototype.sector = function (x, y, radius, sDeg, eDeg) {
+	// 初始保存
+	this.save();
+	// 位移到目标点
+	this.translate(x, y);
+	this.beginPath();
+	// 画出圆弧
+	this.arc(0,0,radius,sDeg, eDeg);
+	// 再次保存以备旋转
+	this.save();
+	// 旋转至起始角度
+	this.rotate(eDeg);
+	// 移动到终点，准备连接终点与圆心
+	this.moveTo(radius,0);
+	// 连接到圆心
+	this.lineTo(0,0);
+	// 还原
+	this.restore();
+	// 旋转至起点角度
+	this.rotate(sDeg);
+	// 从圆心连接到起点
+	this.lineTo(radius,0);
+	this.closePath();
+	// 还原到最初保存的状态
+	this.restore();
+	return this;
+}
+function run(goods){
+	var deg = Math.PI/180;
+	var canvas = document.getElementById('main').getContext('2d');
+	
+	var start_angle = 30 ,angle = 75,space=45;
+	
+	for(var i=0;i<8;i++){
+		//console.log(-Math.PI*3/4);
+		var pi = Math.PI;///360;
+		start_angle += space;
+		angle += space;
+		if(typeof goods == 'undefined'){
+			var color = "#"+Math.round(Math.random()*9)+""+Math.round(Math.random()*9)+""+Math.round(Math.random()*9);
+			canvas.fillStyle=color;
+		}else{
+			for(var n in goods){
+				img = goods[n];
+			}
+		}
+		
+		canvas.sector(200,200,180,start_angle*deg,angle*deg).fill();
+
+	}
+}
+
+var i = 1;
+var num = 0;
+function start(){
+	num = setInterval("run()",100)
+	setTimeout("stop("+num+")",5000);
+}
+
+function stop(num){
+	clearInterval(num);
+}
+start();
+</script>
+</body>
+</html>

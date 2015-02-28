@@ -1,0 +1,45 @@
+#/bin/bash
+
+# install docker
+# read doc: http://docs.docker.com/installation/ubuntulinux/
+# add the Docker repository key to your local keychain.
+
+$ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
+
+# Add the Docker repository to your apt sources list, update and install the lxc-docker package.
+# You may receive a warning that the package isn't trusted. Answer yes to continue installation.
+
+$ sudo sh -c "echo deb https://get.docker.com/ubuntu docker main\
+> /etc/apt/sources.list.d/docker.list"
+$ sudo apt-get update
+$ sudo apt-get install lxc-docker
+
+
+
+# Note:
+# There is also a simple curl script available to help with this process.
+
+$ curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+
+# Install Compose
+# To install Compose, run the following commands:
+
+$ curl -L https://github.com/docker/compose/releases/download/1.1.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+$ chmod +x /usr/local/bin/docker-compose
+
+
+# other document
+
+# *.php document:
+# http://cn2.php.net/manual/zh/ref.mcrypt.php
+# http://php.net/manual/en/class.mysqli-result.php
+
+# docker chinese document:
+# http://cn.soulmachine.me/blog/20131026/
+# http://my.oschina.net/firxiao/blog/286298
+# http://www.isvee.com/archives/850
+# http://www.simapple.com/docker-tutorial
+# http://www.widuu.com/docker/
+# http://www.widuu.com/chinese_docker/index.htmlx
+# http://blog.tankywoo.com/docker/2014/05/08/docker-4-summary.html
+# http://www.infoq.com/cn/articles/docker-build-development-environment-based-on-fig

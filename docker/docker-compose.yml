@@ -1,0 +1,19 @@
+web:
+  build: .
+  command: php -S 0.0.0.0:8000 -t /app
+  ports:
+    - "8000:8000"
+  volumes:
+    - .:/app
+  links:
+    - mysql
+  environment:
+    - PYTHONUNBUFFERED=1
+mysql:
+  image: mysql
+  environment:
+   MYSQL_DATABASE: helloworld
+   MYSQL_ROOT_PASSWORD: wackonline
+#redis:
+#  image: redis:latest
+#  command: redis-server --appendonly yes

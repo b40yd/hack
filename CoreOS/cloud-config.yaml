@@ -1,0 +1,51 @@
+#cloud-config
+
+hostname: wack
+manage_etc_hosts: localhost
+coreos:
+  etcd:
+    discovery: https://discovery.etcd.io/<token>
+    addr: $private_ipv4:4001
+    peer-addr: $private_ipv4:7001
+  units:
+    - name: etcd.service
+      command: start
+    - name: fleet.service
+      command: start
+users:
+  - name: core
+    passwd: $1$1YO4utp3$g7TR81DwCm2/NNEy7QGWg0
+    groups:
+      - sudo
+      - docker
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCubMiW1CR34n03u28M4c55XYj8SbqIvjVwh4s4NRMvy+rLOy0nlR7EmD0HqlIxTNo6CH/1Ruf49gkxH/ftdfjbiS/E19MQsal58BJmsMQaVns5GooAYJu5DUytGTf48Tz6SdV1Hcd3G1Ot+ValsSpAoQmfTZUK9QXIW1cHjThHW2aBYRKBms6moGEp0Hyt1r2+MEPI+P/+6hCGHkLx9Ir8mdrUI5NJYHrQ42HQJeCSGJ6TdYaXK3cIhwxZlU/4mAOpKP4iiDGD/lFosO3HxJLac4SIjuaev5TpN4iMy5g+Ij7pyfXSjdbDPnqNfcMIsabpz5sPop90RBG9cb131nw5 Administrator@LBDZ-20120818HC
+write_files:
+  - path: /etc/resolv.conf
+    permissions: 0644
+    owner: root
+    content: |
+      nameserver 8.8.8.8
+  - path: /etc/motd
+    permissions: 0644
+    owner: root
+    content: |
+      Good news, everyone!
+  - path: /tmp/like_this
+    permissions: 0644
+    owner: root
+    encoding: gzip
+    content: !!binary |
+      H4sIAKgdh1QAAwtITM5WyK1USMqvUCjPLMlQSMssS1VIya9KzVPIySwszS9SyCpNLwYARQFQ5CcAAAA=
+  - path: /tmp/or_like_this
+    permissions: 0644
+    owner: root
+    encoding: gzip+base64
+    content: |
+      H4sIAKgdh1QAAwtITM5WyK1USMqvUCjPLMlQSMssS1VIya9KzVPIySwszS9SyCpNLwYARQFQ5CcAAAA=
+  - path: /tmp/todolist
+    permissions: 0644
+    owner: root
+    encoding: base64
+    content: |
+      UGFjayBteSBib3ggd2l0aCBmaXZlIGRvemVuIGxpcXVvciBqdWdz

@@ -1,7 +1,8 @@
 #!/bin/bash
 
 echo -e "copy emacs.d to ~/\n"
-cp -rfv .emacs.d ~/.emacs.d
+#cp -rfv .emacs.d ~/.emacs.d
+tar zxvf .emacs.d/emacs.d.tar.gz ~/
 
 export GOPATH=$HOME/goprojects
 export PATH=$PATH:$GOPATH/bin

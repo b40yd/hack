@@ -12,7 +12,8 @@
 # curl -w "\n" 'https://discovery.etcd.io/new?size=3'
 # https://discovery.etcd.io/6a28e078895c5ec737174db2419bb2f3	 
 # $ DISCOVERY_TOKEN=`curl -s https://discovery.etcd.io/new`
-# $ sed -i "s@discovery: https://discovery.etcd.io/<token>@discovery: $DISCOVERY_TOKEN@g" clout-config.yaml
+# $ sed -i "s@discovery: https://discovery.etcd.io/<token>@discovery: $DISCOVERY_TOKEN@g" cloud-config.yaml
+# $ coreos-install -d /dev/sda -C stable -c ~/cloud-config.yaml
 
 # On Debian/Ubuntu (via the package "whois")
 # mkpasswd --method=SHA-512 --rounds=4096

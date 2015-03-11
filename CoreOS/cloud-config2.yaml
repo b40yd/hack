@@ -1,0 +1,165 @@
+#cloud-config
+
+ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCubMiW1CR34n0
+
+write_files:
+    - path: /run/cloud-config.yml
+      permissions: '0644'
+      content: |
+        #cloud-config
+
+        coreos:
+            update:
+                reboot-strategy: etcd-lock
+            etcd:
+                # name: node001
+                # generate a new token for each unique cluster from https://discovery.etcd.io/new
+                discovery: https://discovery.etcd.io/<token>
+                # multi-region and multi-cloud deployments need to use $public_ipv4
+                addr: $_public_ipv4:4001
+                peer-addr: $_private_ipv4:7001
+            fleet:
+                public-ip: $_public_ipv4
+                # etcd-request-timeout: 15
+            units:
+                - name: etcd.service
+                  command: start
+                - name: fleet.service
+                  command: start
+                - name: docker-tcp.socket
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Docker Socket for the API
+
+                    [Socket]
+                    ListenStream=2375
+                    Service=docker.service
+                    BindIPv6Only=both
+
+                    [Install]
+                    WantedBy=sockets.target
+                - name: enable-docker-tcp.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Enable the Docker Socket for the API
+
+                    [Service]
+                    Type=oneshot
+                    ExecStart=/usr/bin/systemctl enable docker-tcp.socket
+    - path: /run/setup-environment.sh
+      permissions: '0755'
+      content: |
+        #!/bin/bash
+
+        ENV="/etc/environment"
+
+        # Test for RW access to $1
+        touch $ENV
+        if [ $? -ne 0 ]; then
+            echo exiting, unable to modify: $ENV
+            exit 1
+        fi
+
+        # Setup environment target
+        sed -i -e '/^COREOS_PUBLIC_IPV4=/d' \
+            -e '/^COREOS_PRIVATE_IPV4=/d' \
+            "${ENV}"
+
+        # We spin loop until the the IP addresses are set
+        function get_ip () {
+            IF=$1
+            IP=
+            while [ 1 ]; do
+                IP=$(ifconfig $IF | awk '/inet / {print $2}')
+                if [ "$IP" != "" ]; then
+                    break
+                fi
+                sleep .1
+            done
+            echo $IP  
+        }
+
+        # Echo results of IP queries to environment file as soon as network interfaces 
+        # get assigned IPs
+        echo COREOS_PUBLIC_IPV4=$(get_ip ens33) >> $ENV # Also assigned to same IP
+        echo COREOS_PRIVATE_IPV4=$(get_ip ens33) >> $ENV #ens33 should be changed to your device name
+    - path: /run/prep-cloud-config.sh
+      permissions: '0755'
+      content: |
+        #!/bin/bash
+
+        sed 's/\$_private/$private/g' /run/cloud-config.yml > /tmp/cconfigtmp
+        sed -i 's/\$_public/$public/g' /tmp/cconfigtmp
+        mv /tmp/cconfigtmp /run/cloud-config.yml
+    - path: /etc/resolv.conf
+      permissions: 0644
+      owner: root
+      content: |
+        nameserver 192.168.199.1
+        nameserver 8.8.8.8
+        nameserver 8.8.4.4
+        domain somedomain.local
+hostname: wack
+users:
+    - name: core 
+      # gecos: core
+      # primary-group: your_group_here
+      groups:
+        - docker
+        - sudo
+      # coreos-ssh-import-github: core
+      # lock-passwd: false
+      # passwd text: meiyoumima
+      passwd: $1$1YO4utp3$g7TR81DwCm2/NNEy7QGWg0
+      ssh-authorized-keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCubM
+manage_etc_hosts: localhost
+coreos:
+  units:
+    - name: setup-environment.service
+      command: start
+      runtime: true
+      content: |
+        [Unit]
+        Description=Setup environment with private (and public) IP addresses
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=/run/setup-environment.sh
+    - name: prep-cloud-config.service
+      command: start
+      runtime: true
+      content: |
+        [Unit]
+        Description=Re-write variables in cloud-config for proper expansion.
+        Requires=setup-environment.service
+        After=setup-environment.service
+        #Requires=user-cloudinit-proc-cmdline.service
+        #After=user-cloudinit-proc-cmdline.service
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=/run/prep-cloud-config.sh
+    - name: second-stage-cloudinit.service
+      runtime: true
+      command: start
+      content: |
+        [Unit]
+        Description=Run coreos-cloudinit with actual cloud-config after environment has been set up
+        #Requires=setup-environment.service
+        #After=setup-environment.service
+        Requires=prep-cloud-config.service
+        After=prep-cloud-config.service
+        #Requires=user-cloudinit-proc-cmdline.service
+        #After=user-cloudinit-proc-cmdline.service
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        EnvironmentFile=/etc/environment
+        ExecStart=/usr/bin/coreos-cloudinit --from-file=/run/cloud-config.yml

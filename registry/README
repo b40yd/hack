@@ -1,0 +1,15 @@
+# build registry
+#
+# docker-compose up
+# cd ../docker
+# Build an image
+$ docker build -t localhost:5000/docker/web .
+#
+# Push it to the registry
+$ docker push localhost:5000/containersol/nodejs_app
+# if it warning,add docker config in last line
+# DOCKER_OPTS="--insecure-registry localhost:5000"
+
+# costum an jenkins
+# docker build -t localhost:5000/jenkins_with_docker .
+# docker push localhost:5000/jenkins_with_docker

@@ -1,0 +1,36 @@
+#cloud-config
+coreos: 
+  units: 
+    - name: etcd.service
+      command: stop 
+      mask: true
+    - name: fleet.service
+      command: stop
+      mask: true
+    - name: docker-tcp.socket
+      command: start
+      content: |
+          [Unit]
+          Description=Docker Socket for the API
+          
+          [Socket]
+          ListenStream=2375
+          Service=docker.service
+          BindIPv6Only=both
+          
+          [Install]
+          WantedBy=sockets.target
+    - name: enable-docker-tcp.service 
+      command: start
+      content: |
+          [Unit]
+          Description=Enable the Docker Socket for the API
+          
+          [Service]
+          Type=oneshot
+          ExecStart=/usr/bin/systemctl enable docker-tcp.socket
+  update:
+    group: alpha
+    reboot-strategy: off
+ssh_authorized_keys: 
+  - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHo+5nVpxDhnWBPhEuQ7D7ZYELvA5+fPEWfHmMUwBdW069FSfX1LtbVAUKW7NGMfCxTijQMfvmFt7i+o28uqrVGN+xlDdkKTarPYO/Ux6Rukw0D5RZLVDVdRIOV8Si26pkFp4ezs1NFnCFsPTXD8U4cQ1lok//x248oKGsB4ZWuRNf4PCaIdXDveXdQRbaV5SDo9JEt9VkmfSraH5JENguP51RhFJYzWQAB1QbRZrHYUfZbE+pb/XDTdSPidfRCvss9fDrrhviZjv1Gr8C9jbmSGRB8pKwGC/GWV/mj8nYEY1K3/0c/N9NNIPtmvNkQjq7eGsSUf0cM8ZbwWugr8cB kelseyhightower"

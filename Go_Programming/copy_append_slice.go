@@ -1,7 +1,7 @@
 package main
 import "fmt"
 
-func main() {
+func test() {
     sl_from := []int{1, 2, 3}
     sl_to := make([]int, 10)
 

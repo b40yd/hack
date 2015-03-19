@@ -50,7 +50,7 @@ func main() {
         mv := u1.MethodByName("Say")
 
         args := []reflect.Value{reflect.ValueOf("joe1")}
-
+        fmt.Println("reflect test...")
         mv.Call(args)
 }
 

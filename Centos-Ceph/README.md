@@ -136,13 +136,13 @@ HEALTH_OK
 id pool image  snap device    
 0  test test-1 -    /dev/rbd0 
 #把新建的镜像ceph块进行格式化
-[root@ceph-client dev]# mkfs.ext4 -m0 /dev/rbd0
+[root@ceph-client ~]# mkfs.ext4 -m0 /dev/rbd0
 #新建一个挂载目录
-[root@ceph-client dev]# mkdir /mnt/ceph-rbd-test-1
+[root@ceph-client ~]# mkdir /mnt/ceph-rbd-test-1
 #把新建的镜像ceph块挂载到挂载目录
-[root@ceph-client dev]# mount /dev/rbd0 /mnt/ceph-rbd-test-1/
+[root@ceph-client ~]# mount /dev/rbd0 /mnt/ceph-rbd-test-1/
 #查看挂载情况
-[root@ceph-client dev]# df -h
+[root@ceph-client ~]# df -h
 ```
 #### 在客户端上建立cephFS文件系统
 ```bash 

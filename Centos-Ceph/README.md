@@ -144,7 +144,7 @@ id pool image  snap device
 #查看挂载情况
 [root@ceph-client dev]# df -h
 ```
-###  在客户端上建立cephFS文件系统
+#### 在客户端上建立cephFS文件系统
 ```bash 
 #新建一个挂载目录
 [root@client-node ~]$ mkdir /mnt/cephfs

@@ -54,6 +54,7 @@ enable=1
 [root@admin-node ~]$ ssh-copy-id root@node3
 ```
 ####修改admin-node管理节点的~/.ssh / config文件，这样它登录到Ceph节点创建的用户
+```bash
 Host admin-node
   Hostname admin-node
   User root   
@@ -66,6 +67,7 @@ Host node2
 Host node3
   Hostname node3
   User root
+```
 ####重新部署的话需要的操作
 ```bash
 #$ killall python && killall ceph-mds && killall ceph-mon && ps aux| grep ceph

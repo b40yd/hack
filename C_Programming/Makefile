@@ -10,7 +10,6 @@
 #	make -C $(KDIR) M=$(PWD) modules
 #clean:
 #	rm -f *.ko *.o *.mod.o *.mod.c *.symvers
-
 #endif
 
 # Use GCC, if you have it installed.
@@ -23,3 +22,6 @@ simple-guile: simple-guile.o
 	${CC} simple-guile.o ${LIBS} -o simple-guile
 simple-guile.o: simple-guile.c
 	${CC} -c ${CFLAGS} simple-guile.c
+# compile daemon program
+daemon:
+	${CC} -g -o test_daemon init.c test_daemon.c

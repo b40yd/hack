@@ -1,0 +1,89 @@
+#!/bin/bash
+
+apt-get install afnix -y &&
+apt-get install algol68g -y &&
+apt-get install aplus-fsf asymptote -y &&
+apt-get install ats-lang-anairiats -y &&
+apt-get install bash -y &&
+apt-get install bc  -y &&
+apt-get install boo -y &&
+apt-get install bsdgames -y &&
+apt-get install cduce -y &&
+apt-get install clisp -y &&-y &&
+apt-get install clojure1.6 -y &&
+apt-get install cmake -y &&
+apt-get install coffeescript -y &&
+apt-get install dc -y &&
+apt-get install ecere-sdk -y &&
+apt-get install emacs24 -y &&
+apt-get install erlang -y &&
+apt-get install f2c -y &&
+apt-get install falconpl -y &&
+apt-get install fp-compiler -y &&
+apt-get install fsharp -y &&
+apt-get install g++ -y &&
+apt-get install gambas3-script -y &&
+apt-get install gap -y &&
+apt-get install gauche -y &&
+apt-get install gawk -y &&
+apt-get install gcc -y &&
+apt-get install gdc -y &&
+apt-get install genius -y &&
+apt-get install gforth -y &&
+apt-get install gfortran -y &&
+apt-get install ghc -y &&
+apt-get install ghostscript -y &&
+apt-get install gnat -y &&
+apt-get install gnu-smalltalk -y &&
+apt-get install gnuplot -y &&
+apt-get install gobjc -y &&
+apt-get install golang -y &&
+apt-get install gpt -y &&
+apt-get install gri -y &&
+apt-get install groff -y &&
+apt-get install groovy  -y &&
+apt-get install icont -y &&
+apt-get install iconx -y &&
+apt-get install intercal -y &&
+apt-get install iverilog -y &&
+apt-get install jasmin-sable -y &&
+apt-get install julia -y &&
+apt-get install kaya -y &&
+apt-get install libgd2-xpm-dev -y &&
+apt-get install libpng12-dev -y &&
+apt-get install lisaac -y &&-y &&
+apt-get install llvm -y &&
+apt-get install lua5.2 -y &&
+apt-get install make -y &&
+apt-get install maxima -y &&
+apt-get install mlton -y &&
+apt-get install mono-devel -y &&
+apt-get install mono-mcs -y &&
+apt-get install mono-vbnc -y &&
+apt-get install nasm neko -y &&
+apt-get install nickle -y &&
+apt-get install ocaml -y &&
+apt-get install octave -y &&
+apt-get install open-cobol -y &&
+apt-get install openjdk-6-jdk -y &&
+apt-get install pari-gp -y &&
+apt-get install parrot -y &&
+apt-get install perl -y &&
+apt-get install php5-cli -y &&
+apt-get install pike7.8 -y &&
+apt-get install python -y &&
+apt-get install r-base -y &&
+apt-get install ratfor -y &&
+apt-get install regina-rexx -y &&
+apt-get install rhino ruby2.1 -y &&
+apt-get install scala -y &&
+apt-get install scilab -y &&
+apt-get install slsh -y &&
+apt-get install spl-core -y &&
+apt-get install swi-prolog  -y &&
+apt-get install tcl  -y &&
+apt-get install ucblogo  -y &&
+apt-get install valac -y &&
+apt-get install xsltproc  -y &&
+apt-get install yorick  -y &&
+apt-get install zoem -y

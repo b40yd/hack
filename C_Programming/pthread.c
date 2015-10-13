@@ -23,4 +23,3 @@ int main(){
          pthread_join(t1,NULL);
          return 0;
 }
-

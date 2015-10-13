@@ -8,11 +8,14 @@ CFLAGS      = -Wall -Werror
 CDEBUG      = -g
 
 STATIC_LIBNAME	=	libtest.a
+SHARED_LIBNAME	=	libtest.so
 
 all:
 	@echo "make static"	
 static:$(OBJS)
 	$(STATIC) -crv $(STATIC_LIBNAME) $(OBJS)
+shared:
+	$(CPP) -shared -o $(SHARED_LIBNAME) -fPIC libtest.cpp
 
 %.o:%.cpp
 	$(CPP) $(CFLAGS) $(CDEBUG) -o $@ -c $<
@@ -24,4 +27,4 @@ static:$(OBJS)
 .PHONY: clean
 
 clean:
-	-rm -rfv $(OBJS) $(STATIC_LIBNAME)
+	@rm -rfv $(OBJS) $(STATIC_LIBNAME) $(SHARED_LIBNAME)

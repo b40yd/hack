@@ -16,7 +16,7 @@ int main(void)
     int n;
     char s[255];
     //bzero(&s,0x00);
-    for(n = 1;n<1000;n++){
+    for(n = 1;n<9;n++){
 	//itoa(n,s,4);
 	printf("%d",n);
 	sprintf(s,"%d",n);

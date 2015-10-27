@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\proto">
+      <UniqueIdentifier>{070a5b3c-498c-4daa-a302-2a6626d73028}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\proto">
+      <UniqueIdentifier>{5c3478e3-5795-4647-8534-f590298d8506}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\proto\Messages.pb.cc">
+      <Filter>Source Files\proto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\proto\User.pb.cc">
+      <Filter>Source Files\proto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\proto\Response.pb.cc">
+      <Filter>Source Files\proto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\proto\Status.pb.cc">
+      <Filter>Source Files\proto</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\proto\Messages.pb.h">
+      <Filter>Header Files\proto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\proto\User.pb.h">
+      <Filter>Header Files\proto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\proto\Response.pb.h">
+      <Filter>Header Files\proto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\proto\Status.pb.h">
+      <Filter>Header Files\proto</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

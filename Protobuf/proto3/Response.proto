@@ -1,0 +1,9 @@
+syntax = "proto3";
+package com.protobuf.msg;
+import  "Status.proto";
+
+message Response {
+	msgType type = 1;
+	statusCode status = 2;
+	string data = 3;
+}

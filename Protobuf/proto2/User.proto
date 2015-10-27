@@ -1,0 +1,16 @@
+syntax = "proto2";
+package com.protobuf.msg;
+
+message Other {
+	optional string field_1 = 1;
+	optional string field_2 = 2;
+	optional string field_3 = 3;
+	optional string field_4 = 4;
+}
+
+message Info {
+	optional int32 id = 1;
+	optional string name = 2;
+	optional Other field = 3;
+}
+

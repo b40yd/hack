@@ -1,0 +1,16 @@
+syntax = "proto3";
+package com.protobuf.msg;
+
+
+enum statusCode {
+	OK		=	0;
+	ERR		=	1;
+	WARN	=	2;
+	INFO	=	3;
+}
+
+enum msgType {
+	USER	=	0;
+	HOME	=	1;
+	WORK	=	2;
+}

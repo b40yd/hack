@@ -1,0 +1,6 @@
+[package]
+name = "scanbuf"
+version = "0.1.0"
+authors = ["tag.bao <bb.qnyd@gmail.com>"]
+
+[dependencies]

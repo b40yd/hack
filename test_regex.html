@@ -1,0 +1,77 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>我是一个测试</title>
+	<base href="/">
+	<meta name="description" content="测试被动式扫描">
+</head>
+<body>
+<form action="test.php" method="post" enctype="multipart/form-data">
+<textarea id="textSour" placeholder="在此输入待匹配文本" style="width: 100%; height: 131px;"></textarea>
+<br />
+<span class="add-on">正则表达式</span><input type="text" id="textPattern" placeholder="在此输入正则表达式" class="input-xlarge" style="width: 30%; height: 20px;">
+<label class="checkbox"><input type="checkbox" value="global" checked="checked" id="optionGlobal" name="optionGlobl"/>全局搜索</label>
+<label class="checkbox"><input type="checkbox" value="ignoreCase" id="optionIgnoreCase" name="optionIgnoreCase"/>忽略大小写</label>
+<a onclick="return onMatch();" class="btn btn-primary" style="background-color: #989898;"><i class="icon-chevron-down icon-white"></i>测试匹配</a>
+</form>
+<div class="title">匹配结果：</div>
+<textarea readonly="readonly" id="textMatchResult" style="width: 100%; height: 131px;"></textarea>
+<script language="javascript">
+
+function setVisible(idElement, visible) {
+	var obj = document.getElementById(idElement);
+	obj.style.visibility = visible ? "visible" : "hidden";
+}
+function isValidFields() {
+	var textSour = document.getElementById("textSour");
+	if (null==textSour.value || textSour.value.length<1) {
+		textSour.focus();
+		alert("请输入待匹配文本");
+		return false;
+	}
+	var textPattern = document.getElementById("textPattern");
+	if (null==textPattern.value || textPattern.value.length<1) {
+		textPattern.focus();
+		alert("请输入正则表达式");
+		return false;
+	}
+	return true;
+}
+function buildRegex() {
+	var op = "";
+	if (document.getElementById("optionGlobal").checked)op = "g";
+	if (document.getElementById("optionIgnoreCase").checked)op = op + "i";
+	return new RegExp(document.getElementById("textPattern").value, op);
+}
+function onMatch() {
+	if (!isValidFields())
+	return false;
+	document.getElementById("textMatchResult").value = "";
+	var regex = buildRegex();
+	console.log("RegExp: "+document.getElementById("textPattern").value);
+	console.log(regex);
+	var result = document.getElementById("textSour").value.match(regex);
+	if (null==result || 0==result.length) {
+		document.getElementById("textMatchResult").value = "（没有匹配）";
+		return false;
+	}
+	if (document.getElementById("optionGlobal").checked) {
+		var strResult = "共找到 " + result.length + " 处匹配：\r\n";
+		for (var i=0;i < result.length;++i)strResult = strResult + result[i] + "\r\n";
+		document.getElementById("textMatchResult").value = strResult;
+	}
+	else {
+		document.getElementById("textMatchResult").value= "匹配位置：" + regex.lastIndex + "\r\n匹配结果：" + result[0];
+	}
+	return true;
+}
+function onReplace() {
+	var str = document.getElementById("textSour").value;
+	var regex = buildRegex();
+	document.getElementById("textReplaceResult").value= str.replace(regex, document.getElementById("textReplace").value);
+}
+
+</script>
+
+</body>
+</html>

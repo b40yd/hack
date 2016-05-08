@@ -1,0 +1,14 @@
+%{
+#ifndef _LEX_H
+#define _LEX_H
+#include <string.h>
+struct kwtable {int name,id[2],state;};
+static const struct kwtable *rb_reserved_word(const char *, unsigned int);
+%}
+struct kwtable;
+%%
+when, {272, 272}, 0
+while, {273, 273}, 0
+yield, {286, 386}, 5
+%%
+#endif

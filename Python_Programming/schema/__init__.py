@@ -8,6 +8,9 @@ def schema_model(cls):
     required_props = {}
     for field_name, field_type in vars(cls).items():
         if not field_name.startswith('__'):
+            alisa_name =  field_type.get_name()
+            if alisa_name:
+                field_name = alisa_name
             if field_type.get_required():
                 required_props[field_name] = field_type.get_required()
             validate_props[field_name] = field_type

@@ -1,3 +1,4 @@
+import re
 from abc import ABCMeta,abstractmethod
 
 class SchemaBaseModel(object):
@@ -76,12 +77,13 @@ class BoolField(Field):
         return value
     
 class StringField(Field):
-    def __init__(self,name=None, default='',required=False,min_length=None,max_length=None):
+    def __init__(self,name=None, default='',required=False,min_length=None,max_length=None, regex=None):
         self.default = default
         self.name = name
         self.required = required
         self.min_length = min_length
         self.max_length = max_length
+        self.regex = regex
 
     def validate(self, name, value):
         if not isinstance(value, (str,unicode)):
@@ -93,6 +95,15 @@ class StringField(Field):
         
         if self.max_length is not None and self.max_length < length:
             raise ValueError("{} maximum length should not exceed {} characters".format(name, self.max_length))
+        
+        if self.regex is not None:
+            try:
+                m = re.match(self.regex, value)
+                if m is None or m.end() < len(value):
+                    raise ValueError('{}: {} is NOT fully matched regex.'.format(name, self.regex))
+            except re.error:
+                raise ValueError('{}: {} is NOT a valid regex.'.format(name, self.regex))
+
         return value
     
 class ListField(Field):
@@ -118,16 +129,16 @@ class ListField(Field):
         values = []
         for v in value:
             try:
-                if issubclass(self.item_field, SchemaBaseModel):
+                if isinstance(self.item_field, Field):
+                    values.append(self.item_field.validate(name,v))
+                elif issubclass(self.item_field, SchemaBaseModel):
                     values.append(self.item_field(**v))
-                elif isinstance(self.item_field, Field):
-                    values.append(self.item_field.validate(name,value))
                 elif issubclass(self.item_field, Field):
                     values.append(self.item_field().validate(name, v))
                 else:
                     raise ValueError("is {} unspport type.".format(name, type(v)))
             except ValueError as e:
-               raise ValueError("The {} list {}".format(name, e))
+                raise ValueError("The {} list {}".format(name, e))
         
         return values
 
@@ -139,10 +150,10 @@ class ObjectField(Field):
         self.classobj = classobj
 
     def validate(self, name, value):
-        if issubclass(self.classobj, SchemaBaseModel):
-            return self.classobj(**value)
-        elif isinstance(self.classobj, Field):
+        if isinstance(self.classobj, Field):
             return self.classobj.validate(name,value)
+        elif issubclass(self.classobj, SchemaBaseModel):
+            return self.classobj(**value)
         elif issubclass(self.classobj, Field):
             return self.classobj().validate(name,value)
         else:

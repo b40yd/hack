@@ -3,7 +3,6 @@ from abc import ABCMeta,abstractmethod
 class SchemaBaseModel(object):
     pass
 
-UNLIMITED = -1
 class Field():
     name = None
     default = None
@@ -26,7 +25,7 @@ class Field():
         pass
 
 class IntField(Field):
-    def __init__(self,name=None, default=0,required=False,min_value=UNLIMITED,max_value=UNLIMITED):
+    def __init__(self,name=None, default=0,required=False,min_value=None,max_value=None):
         self.default = default
         self.name = name
         self.required = required
@@ -37,16 +36,16 @@ class IntField(Field):
         if not isinstance(value, int):
             raise ValueError("{} should be integer type".format(name))
         
-        if self.min_value > UNLIMITED and self.min_value > value:
+        if self.min_value is not None and self.min_value > value:
             raise ValueError("{} should be larger than {}".format(name, self.min_value))
         
-        if self.max_value > UNLIMITED and self.max_value < value:
+        if self.max_value is not None and self.max_value < value:
             raise ValueError("{} should be smaller than {}".format(name, self.max_value))
         
         return value
     
 class FloatField(Field):
-    def __init__(self,name=None, default=0.0,required=False,min_value=UNLIMITED,max_value=UNLIMITED):
+    def __init__(self,name=None, default=0.0,required=False,min_value=None,max_value=None):
         self.default = default
         self.name = name
         self.required = required
@@ -57,16 +56,16 @@ class FloatField(Field):
         if not isinstance(value, float):
             raise ValueError("{} should be float type".format(name))
         
-        if self.min_value > UNLIMITED and self.min_value > value:
+        if self.min_value is not None and self.min_value > value:
             raise ValueError("{} should be larger than {}".format(name, self.min_value))
         
-        if self.max_value > UNLIMITED and self.max_value < value:
+        if self.max_value is not None and self.max_value < value:
             raise ValueError("{} should be smaller than {}".format(name, self.max_value))
         
         return value
     
 class BoolField(Field):
-    def __init__(self,name=None, default=False,required=False,min_value=UNLIMITED,max_value=UNLIMITED):
+    def __init__(self,name=None, default=False,required=False,min_value=None,max_value=None):
         self.default = default
         self.name = name
         self.required = required
@@ -77,7 +76,7 @@ class BoolField(Field):
         return value
     
 class StringField(Field):
-    def __init__(self,name=None, default='',required=False,min_length=UNLIMITED,max_length=UNLIMITED):
+    def __init__(self,name=None, default='',required=False,min_length=None,max_length=None):
         self.default = default
         self.name = name
         self.required = required
@@ -89,17 +88,15 @@ class StringField(Field):
             raise ValueError("{} should be string type".format(name))
         
         length = len(value)
-        if self.min_length > UNLIMITED and self.min_length > length:
+        if self.min_length is not None and self.min_length > length:
             raise ValueError("{} should be at least {} characters long".format(name, self.min_length))
         
-        if self.max_length > UNLIMITED and self.max_length < length:
+        if self.max_length is not None and self.max_length < length:
             raise ValueError("{} maximum length should not exceed {} characters".format(name, self.max_length))
-        
-        
         return value
     
 class ListField(Field):
-    def __init__(self,item_field,name=None, default=[],required=False,min_items=UNLIMITED,max_items=UNLIMITED):
+    def __init__(self,item_field,name=None, default=[],required=False,min_items=None,max_items=None):
         self.default = default
         self.name = name
         self.required = required
@@ -112,22 +109,23 @@ class ListField(Field):
         if not isinstance(value, list):
             raise ValueError("{} should be list type".format(name))
         
-        if self.min_items > UNLIMITED and len(value) < self.min_items:
+        if self.min_items is not None and len(value) < self.min_items:
             raise ValueError('{} should be at least {} items.'.format(name, self.min_items))
 
-        if self.max_items > UNLIMITED and len(value) > self.max_items:
+        if self.max_items is not None and len(value) > self.max_items:
             raise ValueError('{}\'s maximum length should not exceed {} characters.'.format(name, self.max_items))
-        
-        if  isinstance(self.item_field, Field):
-            raise ValueError("{} item should be Field type".format(name))
-        
+
         values = []
         for v in value:
             try:
                 if issubclass(self.item_field, SchemaBaseModel):
                     values.append(self.item_field(**v))
+                elif isinstance(self.item_field, Field):
+                    values.append(self.item_field.validate(name,value))
+                elif issubclass(self.item_field, Field):
+                    values.append(self.item_field().validate(name, v))
                 else:
-                    values.append(self.item_field().validate("", v))
+                    raise ValueError("is {} unspport type.".format(name, type(v)))
             except ValueError as e:
                raise ValueError("The {} list {}".format(name, e))
         
@@ -141,7 +139,12 @@ class ObjectField(Field):
         self.classobj = classobj
 
     def validate(self, name, value):
-        if not issubclass(self.classobj, SchemaBaseModel):
-            raise ValueError("{} should be <SchemaModel> type".format(name))
+        if issubclass(self.classobj, SchemaBaseModel):
+            return self.classobj(**value)
+        elif isinstance(self.classobj, Field):
+            return self.classobj.validate(name,value)
+        elif issubclass(self.classobj, Field):
+            return self.classobj().validate(name,value)
+        else:
+            raise ValueError("{} should be <SchemaModel> or <Field> type".format(name))
         
-        return self.classobj(**value)

@@ -8,6 +8,7 @@ class Field():
     name = None
     default = None
     required = False
+    __metaclass__ = ABCMeta
     def get_default(self):
         return self.default
     

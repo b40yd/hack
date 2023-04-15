@@ -9,6 +9,9 @@ class Field():
     default = None
     required = False
     __metaclass__ = ABCMeta
+    def get_name(self):
+        return self.name
+    
     def get_default(self):
         return self.default
     

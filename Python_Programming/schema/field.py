@@ -77,7 +77,7 @@ class BoolField(Field):
         return value
     
 class StringField(Field):
-    def __init__(self,name=None, default=0.0,required=False,min_length=UNLIMITED,max_length=UNLIMITED):
+    def __init__(self,name=None, default='',required=False,min_length=UNLIMITED,max_length=UNLIMITED):
         self.default = default
         self.name = name
         self.required = required
@@ -85,14 +85,16 @@ class StringField(Field):
         self.max_length = max_length
 
     def validate(self, name, value):
-        if not isinstance(value, str):
+        if not isinstance(value, (str,unicode)):
             raise ValueError("{} should be string type".format(name))
         
-        if self.min_length > UNLIMITED and self.min_length > value:
+        length = len(value)
+        if self.min_length > UNLIMITED and self.min_length > length:
             raise ValueError("{} should be at least {} characters long".format(name, self.min_length))
         
-        if self.max_length > UNLIMITED and self.max_length < value:
+        if self.max_length > UNLIMITED and self.max_length < length:
             raise ValueError("{} maximum length should not exceed {} characters".format(name, self.max_length))
+        
         
         return value
     

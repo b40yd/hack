@@ -19,9 +19,11 @@ def schema_model(cls):
         __doc__ = cls.__doc__
         __name__ = cls.__name__
         __module__ = cls.__module__
-        def __init__(self, **kwags):
+        def __init__(self, params={} ,**kwags):
             for field_name, field_type in validate_props.items():
                 value = kwags.get(field_name, None)
+                _value = params.get(field_name, None)
+                value = _value if not value else value
                 if value:
                     if field_name in required_props:
                         required_props.pop(field_name)

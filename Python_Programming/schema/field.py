@@ -66,7 +66,7 @@ class FloatField(Field):
         return value
     
 class BoolField(Field):
-    def __init__(self,name=None, default=False,required=False,min_value=None,max_value=None):
+    def __init__(self,name=None, default=False, required=False):
         self.default = default
         self.name = name
         self.required = required

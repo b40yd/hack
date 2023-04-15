@@ -20,6 +20,8 @@ def schema_model(cls):
         __name__ = cls.__name__
         __module__ = cls.__module__
         def __init__(self, params={} ,**kwags):
+            if params and not isinstance(params, dict):
+                raise ValueError("params should be <class 'dict'>.")
             for field_name, field_type in validate_props.items():
                 value = kwags.get(field_name, None)
                 _value = params.get(field_name, None)

@@ -25,8 +25,8 @@ def schema_model(cls):
             for field_name, field_type in validate_props.items():
                 value = kwags.get(field_name, None)
                 _value = params.get(field_name, None)
-                value = _value if not value else value
-                if value:
+                value = _value if value is None else value
+                if value is not None:
                     if field_name in required_props:
                         required_props.pop(field_name)
                     self.__dict__[field_name] = field_type.validate("<{}.{}>".format(cls.__name__,field_name),value)
@@ -41,9 +41,11 @@ def schema_model(cls):
             if item in self.__dict__:
                 return self.__dict__[item]
             else:
-                raise AttributeError("No such attribute: %s" % item)
+                raise AttributeError("No such attribute: {}".format(item))
             
         def __setattr__(self, name, value):
+            if not name in self.__dict__:
+                raise AttributeError("No such attribute: {}".format(name))
             self.__dict__[name] = value
             return value
         

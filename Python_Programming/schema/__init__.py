@@ -20,6 +20,7 @@ def schema_model(cls):
         __name__ = cls.__name__
         __module__ = cls.__module__
         def __init__(self, params={} ,**kwags):
+            required_diff = []
             if params and not isinstance(params, dict):
                 raise ValueError("params should be <class 'dict'>.")
             for field_name, field_type in validate_props.items():
@@ -28,12 +29,12 @@ def schema_model(cls):
                 value = _value if value is None else value
                 if value is not None:
                     if field_name in required_props:
-                        required_props.pop(field_name)
+                        required_diff.append(field_name)
                     self.__dict__[field_name] = field_type.validate("<{}.{}>".format(cls.__name__,field_name),value)
                 else:
                     self.__dict__[field_name] = field_type.get_default()
                     
-            for field_name in required_props.keys():
+            for field_name in set(required_props.keys()).difference(set(required_diff)):
                 validate_props[field_name].required_missing(field_name)
                 
 
@@ -46,8 +47,9 @@ def schema_model(cls):
         def __setattr__(self, name, value):
             if not name in self.__dict__:
                 raise AttributeError("No such attribute: {}".format(name))
-            self.__dict__[name] = value
-            return value
+            validator = validate_props.get(name, None)
+            if validator:
+                self.__dict__[name] = validator.validate(name, value)
         
         def __getitem__(self, item):
             if item in self.__dict__:

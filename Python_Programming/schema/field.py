@@ -2,7 +2,34 @@ import re
 from abc import ABCMeta,abstractmethod
 
 class SchemaBaseModel(object):
-    pass
+    def __to_dict__(self, lst):
+            rst = []
+            for value in lst:
+                if isinstance(value, list):
+                    rst.append([self.__to_dict__(v) for v in value])
+                elif isinstance(value, SchemaBaseModel):
+                    rst.append(value.to_dict())
+                else:
+                    rst.append(value)
+            return rst
+
+    def to_dict(self,only=[],remove=[]):
+        _dict = {}
+        last_only = set(only).difference(set(remove))
+        last_remove = set(remove).difference(set(only))
+        for attr in self.__dict__:
+            if last_only and not attr in last_only:
+                continue
+            if attr in last_remove:
+                continue
+            if not attr.startswith('_'):
+                value = getattr(self, attr)
+                if isinstance(value, list):
+                    value = self.__to_dict__(value)
+                elif isinstance(value, SchemaBaseModel):
+                    value = value.to_dict()
+                _dict[attr] = value
+        return _dict
 
 class Field():
     name = None

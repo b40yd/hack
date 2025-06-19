@@ -30,7 +30,7 @@ def auto_scan(package_name, prefix='', suffix=''):
         return cls
     return decorator
 
-@auto_scan('abd_utils.services.options', suffix='FilterOption')
+@auto_scan('services.options', suffix='FilterOption')
 class FilterOptionFactory(object):
     instances = {}
     def get_filter_option_instance(self, name, **config):
